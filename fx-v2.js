@@ -86,48 +86,53 @@
             findElements();
         }
 
-    function findElements() {
-        const activeColorInput = document.querySelectorAll('input[name="Цвет"]:checked');
-        let bullets;
+        function findElements() {
+            const activeColorInput = document.querySelectorAll('input[name="Цвет"]:checked');
+            let bullets;
         
-        if (window.innerWidth > 980) {
-            bullets = document.querySelectorAll('.t-store__prod-popup__wrapper');
-        } else {
-            bullets = document.querySelectorAll('.t-slds__bullet');
-        }
-            
-        if (activeColorInput.length > 0 && bullets.length > 0) {
-            updateBullets(activeColorInput, bullets)
-        } else {
-            $('.uc-loading-catalog').hide();
-        }
-    }
+            if (window.innerWidth > 980) {
+                bullets = document.querySelectorAll('.t-store__prod-popup__wrapper');
+            } else {
+                bullets = document.querySelectorAll('.t-slds__bullet');
+            }
         
-    function updateBullets(activeColorInput, bullets) {
-        const validBullets = Array.from(bullets).filter(bullet => bullet.hasAttribute('data-color'));
-            
-        if (activeColorInput.length > 0 && validBullets.length > 0) {
-            afterTimer(activeColorInput, validBullets);
+            if (activeColorInput.length > 0 && bullets.length > 0) {
+                updateBullets(activeColorInput, bullets);
+            } else {
+                document.getElementById('rec855990183').style.display = "none";
+            }
         }
-    }
-    
-    function afterTimer(activeColorInput, bullets) {
-        console.log('afterTimer стартанула')
-        const activeColor = activeColorInput[0].value; // Получаем значение активного цвета
-        let bulletsToHide = [];
-
-        bullets.forEach((bullet) => {
-            if (bullet.dataset.color !== activeColor) {
-               bulletsToHide.push(bullet);
-            } 
-        });
-              
-        bulletsToHide.forEach((bullet) => {
-            bullet.style.display = "none";
-        }); 
-            
-        $('.uc-loading-catalog').hide();
-    }
+        
+        function updateBullets(activeColorInput, bullets) {
+            const selectedColor = activeColorInput[0].value; // Получаем значение выбранного цвета
+            let startShowing = false;
+        
+            bullets.forEach((bullet) => {
+                // Если встретили следующий цвет, останавливаем показ
+                if (bullet.dataset.color == selectedColor) {
+                    startShowing = true;
+                }
+                
+                if (bullet.dataset.color && bullet.dataset.color !== selectedColor && startShowing) {
+                    startShowing = false;
+                }
+        
+                // Если элемент должен быть показан, показываем его
+                if (startShowing) {
+                    bullet.style.display = window.innerWidth > 980 ? "inline-flex" : "inline-block";
+                } else {
+                    bullet.style.display = "none";
+                }
+        
+                // Если встретили выбранный цвет, начинаем показ
+                if (bullet.dataset.color === selectedColor) {
+                    startShowing = true;
+                }
+            });
+        
+            // Скрываем элемент с id rec855990183
+            document.getElementById('rec855990183').style.display = "none";
+        }
 
 document.addEventListener("click", function (event) {
     if (!event.isTrusted || !event.target.matches('input[name="Цвет"]')) return;
