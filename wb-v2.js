@@ -112,7 +112,7 @@ document.addEventListener("click", function (event) {
         // Если показ активен, показываем карточку
         if (startShowing) {
             if (window.innerWidth > 980) {
-                wrapper.style.display = "inline-flex";
+                wrapper.style.display = "inline-block";
             } else {
                 wrapper.style.display = "inline-block";
             }
@@ -156,7 +156,7 @@ document.addEventListener("click", function (event) {
         
                 // Если элемент должен быть показан, показываем его
                 if (startShowing) {
-                    bullet.style.display = window.innerWidth > 980 ? "inline-flex" : "inline-block";
+                    bullet.style.display = window.innerWidth > 980 ? "inline-block" : "inline-block";
                 } else {
                     bullet.style.display = "none";
                 }
